@@ -1,6 +1,6 @@
 # Deduplicate scan findings — evaluation guide
 
-Version under test: `1.0.0`. Use normalized fixture records with pre-registered expected clusters, tiers, and possible-duplicate pairs. Keep development and held-out fixtures separate.
+Version under test: `1.1.0`. Use normalized fixture records with pre-registered expected clusters, tiers, and possible-duplicate pairs. Keep development and held-out fixtures separate.
 
 | Fixture | Expected behavior |
 |---|---|
@@ -14,6 +14,9 @@ Version under test: `1.0.0`. Use normalized fixture records with pre-registered 
 | Same secret hash at two locations | Two clusters. |
 | Two SAST records that match on file and CWE, lines from different revisions, no fingerprint | Possible duplicate; not merged. |
 | Prior ledger marks a record false positive; code at that location changed | Linked, marked `stale-decision`; dismissal not applied. |
+| Two CVEs in one npm package, same lockfile | Two clusters, same `fix_target` `dep:npm:<pkg>:package-lock.json`, linked, not merged. |
+| Two SAST findings in one helper function | No `fix_target`; no link. Shared code causes are left for the decide step. |
+| 40 clusters from one Semgrep rule | Rule listed with its count in the rule-volume section of the report. |
 
 ## Scoring and release checks
 
